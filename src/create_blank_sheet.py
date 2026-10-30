@@ -1,14 +1,22 @@
 """functionality for creating blank sheet"""
 import pandas as pd
 
-def create_blank_sheet(sheet_name):
-    """Creates a blank sheet that will be readable by tower."""
+def create_blank_expenses_sheet(sheet_name, type="expenses"):
+    """Creates a blank accounts sheet that will be readable by tower."""
     if not isinstance(sheet_name, str) or sheet_name == "":
         raise TypeError("sheet_name must be a string")
 
-    sheet = pd.DataFrame(
-        columns = ["date", "value", "currency", "tag"]
-    )
+    if type == "expenses":
+        sheet = pd.DataFrame(
+            columns = ["date", "value", "currency", "tag", "description"]
+        )
+    elif type == "accounts":
+        sheet = pd.DataFrame(
+            columns = ["name", "currency", "value", "description"]
+        )
+    else:
+        raise ValueError("type must be either 'expenses' or 'accounts'")
+
     with pd.ExcelWriter(
         f"sheets/{sheet_name}.ods",
         engine="odf"
